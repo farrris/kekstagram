@@ -2,13 +2,28 @@ const form = document.querySelector('.img-upload__form');
 const uploadFile = document.querySelector('#upload-file');
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
+const uploadSubmit = document.querySelector("#upload-submit")
 const body = document.querySelector('body');
 const uploadCancel = document.querySelector('#upload-cancel');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentsInput = document.querySelector('.text__description');
+const serverErrorMessage = document.querySelector("#error");
+const serverErrorButton = document.querySelector(".error__button");
+const serverSuccessMessage = document.querySelector("#success");
+const serverSuccessButton = document.querySelector(".success__button")
 
 import { resetScale } from './scale.js';
 import { resetEffects } from './effect.js';
+
+import { createImage } from "./api.js"
+
+const hideSuccessMessage = () => {
+  serverSuccessMessage.hidden = true;
+}
+
+const hideErrorMessage = () => {
+  serverErrorMessage.hidden = true;
+}
 
 const pristine = new Pristine(form, {
     classTo: 'img-upload__element',
@@ -69,11 +84,20 @@ pristine.addValidator(
     'Неправильно заполнены хэштеги'
 );
 
-const formSubmit = (event) => {
+const formSubmit = async (event) => {
   event.preventDefault();
-  pristine.validate();
+  if (pristine.validate()) {
+    const data = new FormData(form)
+    uploadSubmit.disabled = true;
+    await createImage(data);
+    uploadSubmit.disabled = false;
+    hideModal();
+  };
+
 };
 
 uploadFile.addEventListener('change', uploadFileEvent);
 uploadCancel.addEventListener('click', uploadCancelClick);
 form.addEventListener('submit', formSubmit);
+serverErrorButton.addEventListener('click', hideErrorMessage);
+serverSuccessButton.addEventListener('click', hideSuccessMessage);
