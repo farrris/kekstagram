@@ -1,5 +1,6 @@
-import { generateImages } from "./mocks.js";
-import { renderPictures } from "./pictures.js";
+import { generateImages } from './mocks.js';
+import { renderPictures } from './pictures.js';
+import "./form.js"
 
-let pictures = generateImages()
-renderPictures(pictures)
+const pictures = generateImages();
+renderPictures(pictures);
