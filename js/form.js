@@ -7,6 +7,9 @@ const uploadCancel = document.querySelector('#upload-cancel');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentsInput = document.querySelector('.text__description');
 
+import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
+
 const pristine = new Pristine(form, {
     classTo: 'img-upload__element',
     errorTextParent: 'img-upload__element',
@@ -41,6 +44,8 @@ const uploadFileEvent = () => {
 
 const hideModal = () => {
     imgUploadForm.reset();
+    resetScale();
+    resetEffects();
     pristine.reset();
     imgUploadOverlay.classList.add('hidden');
     body.classList.remove('modal-open');
